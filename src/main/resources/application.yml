@@ -1,11 +1,10 @@
 server:
   port: 8080
 
-
-
 spring:
   application:
     name: gateway
+
   cloud:
     consul:
       host: localhost
@@ -16,16 +15,18 @@ spring:
         healthCheckInterval: 10s
 
     gateway:
-      diecovery:
+      discovery:
         locator:
           enabled: true
       routes:
-        - id: demandsupply-service
-          uri: lb://demandsupply-service
-          predicates:
-            - Path=/**
-        - id: auth-service
-          uri: http://localhost:3000
-          predicates:
-            - Path=/**
+          - id: auth-service
+            uri: lb://auth-service
+            predicates:
+              - Path=/api/**
+
+          - id: demandsupply-service
+            uri: lb://demandsupply-service
+            predicates:
+               - Path=/demandsupply/**
+
 
